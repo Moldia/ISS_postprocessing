@@ -20,6 +20,7 @@ setup(
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
     long_description=long_description,
+    package_dir = {'': 'src'},
     packages=find_packages(),
     install_requires=['scanpy', 'cellpose==0.6.1','squidpy','tangram-sc', 'pandas',
                     'numpy', 'scikit-image', 'scipy', 'pandas', ],
