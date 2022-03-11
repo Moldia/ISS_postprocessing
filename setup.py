@@ -23,7 +23,7 @@ setup(
     py_modules=["ISS_postprocessing"],
     packages=find_packages(),
     install_requires=['scanpy', 'cellpose==0.6.1','squidpy','tangram-sc', 'pandas',
-                    'numpy', 'scikit-image', 'scipy', 'pandas', ],
+                    'numpy', 'scikit-image', 'scipy', 'pandas', 'pciSeq'],
     keywords=['python', 'spatial transcriptomics', 
             'spatial resolved transcriptomics', 
             'in situ sequencing', 
