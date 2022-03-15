@@ -223,13 +223,13 @@ def plot_clusters(anndata,
 
 
             for q, j in enumerate(sorted(list(anndata_broad.obs[sample_id_column].unique()))):
+               spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
+               axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.x), (anndata[anndata.obs[sample_id_column] == j].obs.y), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
+               axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
 
-
-                spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
-                axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.x), (anndata[anndata.obs[sample_id_column] == j].obs.y), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
-                axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
-
-
+               axs[q].set_title(str(str(j)))
+               axs[q].axis('scaled')
+               axs[q].axis('off')
             plt.show()
 
 def spatial_neighborhood(anndata,
