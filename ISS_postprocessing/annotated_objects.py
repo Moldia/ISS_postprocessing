@@ -223,13 +223,13 @@ def plot_clusters(anndata,
 
 
             for q, j in enumerate(sorted(list(anndata_broad.obs[sample_id_column].unique()))):
-               spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
-               axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.x), (anndata[anndata.obs[sample_id_column] == j].obs.y), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
-               axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
 
-               axs[q].set_title(str(str(j)))
-               axs[q].axis('scaled')
-               axs[q].axis('off')
+
+                spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
+                axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.y), (anndata[anndata.obs[sample_id_column] == j].obs.x), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
+                axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
+
+
             plt.show()
 
 def spatial_neighborhood(anndata,
@@ -389,4 +389,89 @@ def pciseq_anndata(cellData_file,
     if write_ann == True: 
         an_sp.write(output)
     return an_sp
+
+def color_cells_gene_expression(ad, 
+                     GOI = 'Cd74',
+                     spot_size=100,
+                     sample_id_col = 'sample_id', 
+                     plot_black_background = False, 
+                    cmap = 'turbo'):
     
+    fig, axs = plt.subplots(3,ceil(len(ad.obs[sample_id_col].unique())/3), figsize=(20, 10))
+    fig.subplots_adjust(hspace = .5, wspace=.001)
+    axs = axs.ravel()
+    plt.rcdefaults()
+    
+    if plot_black_background == True: 
+        mpl.rcParams['text.color'] = 'w'
+        plt.style.use('dark_background')
+    else: 
+        plt.rcdefaults()
+        
+    
+    plt.suptitle('Expression of ' + GOI)
+    for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
+        sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=GOI,spot_size=spot_size,ax=axs[q],  show=False, title = j, cmap = cmap)
+        axs[q].set_xticks([])
+        axs[q].set_yticks([])
+        axs[q].set_xlabel(' ')
+        axs[q].set_ylabel(' ')
+    plt.tight_layout(pad=3.0)
+    plt.show()
+    
+def plot_all_clusters(ad, 
+                     cluster = 'leiden',
+                     spot_size=100,
+                     sample_id_col = 'sample_id', 
+                     plot_black_background = True):
+    
+    fig, axs = plt.subplots(3,ceil(len(ad.obs[sample_id_col].unique())/3), figsize=(20, 10))
+    fig.subplots_adjust(hspace = .5, wspace=.001)
+    axs = axs.ravel()
+    
+    if plot_black_background == True: 
+        mpl.rcParams['text.color'] = 'w'
+        plt.style.use('dark_background')
+    else: 
+        plt.rcdefaults()
+        
+    
+    plt.suptitle('Spatial localization of ' + cluster)
+    for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
+        sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=cluster,spot_size=spot_size,ax=axs[q],  show=False, title = j, )
+        axs[q].get_legend().remove()
+        axs[q].set_xticks([])
+        axs[q].set_yticks([])
+        axs[q].set_xlabel(' ')
+        axs[q].set_ylabel(' ')
+    plt.tight_layout(pad=3.0)
+    plt.show() 
+
+def color_cells_gene_expression(ad, 
+                     GOI = 'Cd74',
+                     spot_size=100,
+                     sample_id_col = 'sample_id', 
+                     plot_black_background = False, 
+                    cmap = 'turbo'):
+    
+    fig, axs = plt.subplots(3,ceil(len(ad.obs[sample_id_col].unique())/3), figsize=(20, 10))
+    fig.subplots_adjust(hspace = .5, wspace=.001)
+    axs = axs.ravel()
+    plt.rcdefaults()
+    
+    if plot_black_background == True: 
+        mpl.rcParams['text.color'] = 'w'
+        plt.style.use('dark_background')
+    else: 
+        plt.rcdefaults()
+        
+    
+    plt.suptitle('Expression of ' + GOI)
+    for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
+        sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=GOI,spot_size=spot_size,ax=axs[q],  show=False, title = j, cmap = cmap)
+        axs[q].set_xticks([])
+        axs[q].set_yticks([])
+        axs[q].set_xlabel(' ')
+        axs[q].set_ylabel(' ')
+    plt.tight_layout(pad=3.0)
+    plt.show()
