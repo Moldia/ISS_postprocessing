@@ -187,6 +187,7 @@ def plot_marker_genes(anndata,
 def plot_clusters(anndata, 
                     clusters_to_map, 
                     broad_cluster,
+                    cluster_label_type = int,
                     key='t-test', 
                     size = 0.5,
                     number_of_marker_genes = 10, 
@@ -202,7 +203,8 @@ def plot_clusters(anndata,
         anndata_broad = anndata[anndata.obs[broad_cluster] == broad]
         print('  ')
         print(broad)
-        for cluster in sorted(list(anndata_broad.obs[clusters_to_map].unique())):
+
+        for cluster in sorted(list(anndata_broad.obs[clusters_to_map].unique().astype(cluster_label_type))):
             print(cluster)
             genes = list(sc.get.rank_genes_groups_df(anndata_broad,group=str(cluster), key=key)['names'].head(number_of_marker_genes))
             print(*list(genes), sep = " ")
