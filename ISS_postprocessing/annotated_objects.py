@@ -128,11 +128,7 @@ def create_anndata_obj(spots_file,
         an_sp.write_h5ad(output_file)
     else: 
         print('not writing')
-    
     return an_sp
-
-
-
 
 def recluster_specific_cluster(anndata, 
                                to_cluster, 
@@ -155,8 +151,7 @@ def recluster_specific_cluster(anndata,
 
         plt.rcdefaults()
         with rc_context({'figure.figsize': (10, 10), 'figure.dpi': 50}):
-            sc.pl.umap(anndata_int, color = ("cell_type_"+str(i)),s=30,legend_loc='on data',legend_fontsize=20,legend_fontoutline=10)
-            
+            sc.pl.umap(anndata_int, color = ("cell_type_"+str(i)),s=30,legend_loc='on data',legend_fontsize=20,legend_fontoutline=10)     
     return anndata_int
 
 
@@ -173,11 +168,9 @@ def plot_umap(anndata,
               legend_fontsize=15,
               legend_fontoutline=10
              ): 
-    
     if compute_umap == True: 
         sc.pp.neighbors(anndata, n_neighbors=n_neighbors, n_pcs=n_pcs)
         sc.tl.umap(anndata, min_dist=min_dist)
-
     plt.rcdefaults()
     with rc_context({'figure.figsize': fig_size, 'figure.dpi': fig_dpi}):
         sc.pl.umap(anndata, color = (color),s=s,legend_loc=legend_loc,legend_fontsize=legend_fontsize,legend_fontoutline=legend_fontoutline, frameon = False, title = ' ')
@@ -200,10 +193,8 @@ def plot_clusters(anndata,
                     sample_id_column = 'sample_id', 
                     dim_subplots = [3,3]
                  ): 
-    
     mpl.rcParams['text.color'] = 'w'
     plt.style.use('dark_background')
-
     clusters_to_map = clusters_to_map
     cluster_class = {}
     marker_genes = {}
@@ -220,16 +211,13 @@ def plot_clusters(anndata,
             fig.subplots_adjust(hspace = .5, wspace=.001)
             fig.suptitle('Cluster: '+str(cluster))
             axs = axs.ravel()
-
-
             for q, j in enumerate(sorted(list(anndata_broad.obs[sample_id_column].unique()))):
-
-
                 spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
-                axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.y), (anndata[anndata.obs[sample_id_column] == j].obs.x), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
+                axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.x), (anndata[anndata.obs[sample_id_column] == j].obs.y), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
                 axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
-
-
+                axs[q].set_title(str(str(j)))
+                axs[q].axis('scaled')
+                axs[q].axis('off')
             plt.show()
 
 def spatial_neighborhood(anndata,
@@ -238,8 +226,6 @@ def spatial_neighborhood(anndata,
                            umap_dist = 1,
                            leiden_resolution = 0.2
                            ):
-    
-    
     distances_input=np.array([anndata.obs['x'],anndata.obs['y']])
     din=distances_input.transpose()
     distances=euclidean_distances(din, din)
@@ -260,7 +246,6 @@ def create_ann_tiles(sample_path,
                     expand = True, 
                     expand_distance = 30, 
                     anndata_file_output = 'anndata.h5ad'):
-    
     path = sample_path+segmentation_folder
     files = os.listdir(path)
     #seg_files = [k for k in files if 'tile' in k]
@@ -323,9 +308,6 @@ def create_ann_tiles(sample_path,
 def concat_anndata(sample_anndata_list, 
                   anndata_name = 'annData_obj_expanded.h5ad'
                   ): 
-    
-    import scanpy as sc
-    
     adsp_list = []
     for sample in sample_anndata_list: 
         print(sample + anndata_name)
@@ -344,10 +326,6 @@ def add_fov_number(spots_file,
                    tile_size = 2000, 
                    conversion_factor=0.1625, 
                    new_tile_column = 'fov_2000'): 
-    import pandas as pd
-    import warnings
-    warnings.filterwarnings("ignore")
-
     spots = pd.read_csv(spots_file)
     tile_pos = pd.read_csv(tile_pos_file, header = None)
     
@@ -401,14 +379,11 @@ def color_cells_gene_expression(ad,
     fig.subplots_adjust(hspace = .5, wspace=.001)
     axs = axs.ravel()
     plt.rcdefaults()
-    
     if plot_black_background == True: 
         mpl.rcParams['text.color'] = 'w'
         plt.style.use('dark_background')
     else: 
         plt.rcdefaults()
-        
-    
     plt.suptitle('Expression of ' + GOI)
     for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
         sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=GOI,spot_size=spot_size,ax=axs[q],  show=False, title = j, cmap = cmap)
@@ -424,7 +399,6 @@ def plot_all_clusters(ad,
                      spot_size=100,
                      sample_id_col = 'sample_id', 
                      plot_black_background = True):
-    
     fig, axs = plt.subplots(3,ceil(len(ad.obs[sample_id_col].unique())/3), figsize=(20, 10))
     fig.subplots_adjust(hspace = .5, wspace=.001)
     axs = axs.ravel()
@@ -434,8 +408,6 @@ def plot_all_clusters(ad,
         plt.style.use('dark_background')
     else: 
         plt.rcdefaults()
-        
-    
     plt.suptitle('Spatial localization of ' + cluster)
     for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
         sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=cluster,spot_size=spot_size,ax=axs[q],  show=False, title = j, )
@@ -458,14 +430,11 @@ def color_cells_gene_expression(ad,
     fig.subplots_adjust(hspace = .5, wspace=.001)
     axs = axs.ravel()
     plt.rcdefaults()
-    
     if plot_black_background == True: 
         mpl.rcParams['text.color'] = 'w'
         plt.style.use('dark_background')
     else: 
         plt.rcdefaults()
-        
-    
     plt.suptitle('Expression of ' + GOI)
     for q, j in enumerate(sorted(list(ad.obs[sample_id_col].unique()))):
         sc.pl.spatial(ad[ad.obs[sample_id_col] == j],color=GOI,spot_size=spot_size,ax=axs[q],  show=False, title = j, cmap = cmap)
