@@ -14,9 +14,7 @@ def preprocess_spots(spots_file, conversion_factor = 0.1625):
 
 def get_most_probable_call_pciseq(cellData):
     # create dataframe with most probable cell types
-
     append_data = pd.DataFrame(columns=['Cell_Num', 'X', 'Y', 'ClassName', 'Prob'])
-    
     # create dataframe with most probable cell types
     for i, cell in enumerate(cellData.Cell_Num):
         cell_names = cellData.ClassName[i]
@@ -45,4 +43,3 @@ def run_pciseq(spots, coo_mask, sc_expression_matrix, output_dir, save_output = 
         geneData.to_json(output_dir+'/geneData.json')
         most_probable.to_csv(output_dir+'/most_probable.csv')
     return cellData, geneData, most_probable
-
