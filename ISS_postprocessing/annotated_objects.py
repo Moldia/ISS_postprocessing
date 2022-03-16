@@ -428,7 +428,7 @@ def plot_all_clusters(ad,
     fig, axs = plt.subplots(3,ceil(len(ad.obs[sample_id_col].unique())/3), figsize=(20, 10))
     fig.subplots_adjust(hspace = .5, wspace=.001)
     axs = axs.ravel()
-    
+    plt.rcdefaults()
     if plot_black_background == True: 
         mpl.rcParams['text.color'] = 'w'
         plt.style.use('dark_background')
