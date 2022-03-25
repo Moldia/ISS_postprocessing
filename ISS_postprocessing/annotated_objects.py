@@ -319,7 +319,7 @@ def concat_anndata(sample_anndata_list,
             adsp_list.append(adsp)
         except:
             print('sample: ' + sample + anndata_name +' not found')
-    adsp = sc.concat(adsp_list)
+    adsp = sc.concat(adsp_list, index_unique=None, join='outer', fill_value=0)
     return adsp
 
 def add_fov_number(spots_file, 
