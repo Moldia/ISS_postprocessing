@@ -64,7 +64,7 @@ def cell_pose_segemenation_to_coo(image, diam, expanded_distance):
     expanded_new = expanded.astype('uint32')
     coo = coo_matrix(expanded_new)
         
-    return masks_nuclei, coo
+    return expanded_new, coo
 
 
 import time, os, sys
