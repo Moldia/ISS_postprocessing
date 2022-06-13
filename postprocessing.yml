@@ -308,7 +308,6 @@ dependencies:
     - tornado==6.1
     - typing-extensions==4.1.1
     - umap-learn==0.5.2
-    - unknown==0.2.5.dev44+g63f4910
     - webencodings==0.5.1
     - websocket-client==1.3.1
     - websockets==10.3
