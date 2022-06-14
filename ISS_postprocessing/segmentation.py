@@ -24,6 +24,51 @@ import pandas as pd
 from skimage.filters import threshold_multiotsu
 from skimage.measure import label, regionprops
 
+def stardist_segmentation(image_path, output_path , model_name = '2D_versatile_fluo',expand_cells = True, n_tiles = (4,4), expanded_distance = 20,):
+    import matplotlib.pyplot as plt
+    %matplotlib inline
+    %config InlineBackend.figure_format = 'retina'
+    import pandas as pd
+    from glob import glob
+    from tifffile import imread
+    from csbdeep.utils import Path, normalize
+    from csbdeep.io import save_tiff_imagej_compatible
+
+    from stardist import random_label_cmap, _draw_polygons, export_imagej_rois
+    from stardist.models import StarDist2D
+    import tifffile as tff
+    from scipy.sparse import (
+    coo_matrix, save_npz, load_npz
+    )
+    from skimage import (
+        io, color, feature, filters, measure, morphology, segmentation, util
+    )
+    
+    model = StarDist2D.from_pretrained(model_name)
+    from skimage.segmentation import watershed, expand_labels
+    
+    image = tff.imread(image_path)
+    print(image.shape)
+    print('normalize image')
+    image = normalize(image, 1,99.8)
+    print('predict instance')
+    labels, details = model.predict_instances(image,n_tiles = n_tiles) # 4,4
+    print('label image')
+    labels = measure.label(labels)
+    
+    if expand_cells == True: 
+        print('expand image')
+        expanded = expand_labels(labels, distance=expanded_distance)
+        coo = coo_matrix(expanded)
+        print('save output')
+        save_npz(output_path+'/stardist_segmentation_expanded.npz',coo, compressed=True)
+        save_npz(output_path+'/stardist_segmentation_labels.npz',coo_matrix(labels), compressed=True)
+    else: 
+        coo = coo_matrix(labels)
+        print('save output')
+        save_npz(output_path+'/stardist_segmentation_labels.npz',coo_matrix(labels), compressed=True)
+
+
 
 
 def cell_pose_segemenation_to_coo(image, diam, expanded_distance):

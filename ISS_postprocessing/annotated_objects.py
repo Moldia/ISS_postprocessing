@@ -79,9 +79,9 @@ def create_anndata_obj(spots_file,
     segmentation_mask, 
     output_file,
     filter_data=True, 
-    metric = 'distance', 
+    metric = 'quality_minimum', 
     write_h5ad = True,
-    value= 1.2,
+    value= 0.5,
     convert_coords = True, 
     conversion_factor = 0.1625): 
     print('reading spots file')
@@ -89,7 +89,13 @@ def create_anndata_obj(spots_file,
     spots = pd.read_csv(spots_file)
     
     if filter_data==True:
-        spots_filtered = spots[spots[metric] < value]
+        if metric == 'quality_minimum':
+            spots_filtered = spots[spots[metric] > value]
+        elif metric == 'quality_mean':
+            spots_filtered = spots[spots[metric] > value]
+        elif metric == 'distance': 
+            spots_filtered = spots[spots[metric] < value]
+         
     else: 
         spots_filtered = spots
     
@@ -115,7 +121,8 @@ def create_anndata_obj(spots_file,
     print('assign spots to cells')
     assigned_filt = assinged[assinged.cell != 0]
     hm = assinged.groupby(['Gene','cell']).size().unstack(fill_value=0)
-    hm = hm.drop(columns = 0)
+    if 0 in hm.columns:
+        hm = hm.drop(columns = 0)
 
     an_sp = sc.AnnData(X=hm.T)
     cells[0]  = cells[0].astype(str)
@@ -123,11 +130,14 @@ def create_anndata_obj(spots_file,
     an_sp.obs = cells_filt
     an_sp.obs = an_sp.obs.drop(columns = 0)
     cells[0].astype(int)-1
+    
     if write_h5ad == True:
         print('write h5ad')
+        
         an_sp.write_h5ad(output_file)
     else: 
         print('not writing')
+    
     return an_sp
 
 def recluster_specific_cluster(anndata, 
