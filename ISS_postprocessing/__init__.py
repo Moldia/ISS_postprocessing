@@ -2,7 +2,7 @@ from ISS_postprocessing.annotated_objects import (
                                           get_object_info, 
                                           assign_spots_to_cells, 
                                           Diff, 
-                                          reate_anndata_obj, 
+                                          create_anndata_obj, 
                                           recluster_specific_cluster, 
                                           plot_umap, 
                                           plot_marker_genes, 
