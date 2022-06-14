@@ -26,8 +26,7 @@ from skimage.measure import label, regionprops
 
 def stardist_segmentation(image_path, output_path , model_name = '2D_versatile_fluo',expand_cells = True, n_tiles = (4,4), expanded_distance = 20,):
     import matplotlib.pyplot as plt
-    %matplotlib inline
-    %config InlineBackend.figure_format = 'retina'
+    
     import pandas as pd
     from glob import glob
     from tifffile import imread
