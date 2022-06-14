@@ -469,8 +469,7 @@ def map_of_clusters(adata,key='leiden',clusters='all',size=8,background='white',
      #-figuresize: to specify the size of your figure		
      #-save: if you want to save your figure, give the PATH of the folder where you want to save it		
      #-format: specify the format in which you want to save your figure		
-
-      try:		
+     try:		
          adata.obs[key]=adata.obs[key].astype(int)		
          colors=dict(zip(np.unique(adata.obs[key]),adata.uns[key+'_colors']))		
      except:		
