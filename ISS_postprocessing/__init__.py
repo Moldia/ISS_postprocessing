@@ -15,7 +15,8 @@ from ISS_postprocessing.annotated_objects import (
                                           color_cells_gene_expression, 
                                           plot_all_clusters, 
                                           color_cells_gene_expression, 
-                                          map_of_clusters
+                                          map_of_clusters,
+                                         plot_specific_cluster
                                           ) 
 from ISS_postprocessing.segmentation import (
                                         stardist_segmentation, 
