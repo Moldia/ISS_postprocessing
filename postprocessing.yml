@@ -48,6 +48,7 @@ dependencies:
     - joblib==1.1.0
     - kiwisolver==1.4.2
     - leidenalg==0.8.9
+    - ipykernel
     - llvmlite==0.38.0
     - matplotlib==3.5.1
     - matplotlib-scalebar==0.8.1
