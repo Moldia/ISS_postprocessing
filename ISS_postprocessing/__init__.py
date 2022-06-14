@@ -1,4 +1,5 @@
-from ISS_postprocessing.annotated_objects import (get_object_info, 
+from ISS_postprocessing.annotated_objects import (
+                                          get_object_info, 
                                           assign_spots_to_cells, 
                                           Diff, 
                                           reate_anndata_obj, 
@@ -16,11 +17,12 @@ from ISS_postprocessing.annotated_objects import (get_object_info,
                                           color_cells_gene_expression, 
                                           map_of_clusters
                                           ) 
-from ISS_postprocessing.segmentation import (stardist_segmentation,
+from ISS_postprocessing.segmentation import (
+                                        stardist_segmentation, 
                                         cell_pose_segemenation_to_coo, 
+                                        segment_tile, 
                                         hex_to_rgb, 
-                                        plot_segmentation_mask_colored,
-                                        segment_tile
+                                        plot_segmentation_mask_colored
                                         ) 
 
 from ISS_postprocessing.pciseq import (run_pciseq, 
