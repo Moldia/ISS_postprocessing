@@ -511,3 +511,38 @@ def map_of_clusters(adata,key='leiden',clusters='all',size=8,background='white',
                  plt.savefig(save +'/map_group_of_clusters_'+str(s)+'_'+str(size)+background+'_'+key+'.'+format)		
  #        plt.title('Group: '+ paste(clusters))		
 
+def plot_specific_cluster(anndata, 
+                    clusters_to_map, 
+                    broad_cluster,
+                    cluster, 
+                    cluster_label_type = int,
+                    key='t-test', 
+                    size = 0.5,
+                    number_of_marker_genes = 10, 
+                    sample_id_column = 'sample_id', 
+                    dim_subplots = [3,3]
+                 ): 
+    mpl.rcParams['text.color'] = 'w'
+    plt.style.use('dark_background')
+    clusters_to_map = clusters_to_map
+    cluster_class = {}
+    marker_genes = {}
+    for broad in sorted(list(anndata.obs[broad_cluster].unique())): 
+        anndata_broad = anndata[anndata.obs[broad_cluster] == broad]
+        print('  ')
+        genes = list(sc.get.rank_genes_groups_df(anndata_broad,group=str(cluster), key=key)['names'].head(number_of_marker_genes))
+        print(*list(genes), sep = " ")
+        spatial_int = anndata_broad[anndata_broad.obs[clusters_to_map] == str(cluster)]
+        fig, axs = plt.subplots(dim_subplots[0],ceil(len(anndata_broad.obs[sample_id_column].unique())/dim_subplots[1]), figsize=(20, 10))
+        fig.subplots_adjust(hspace = .5, wspace=.001)
+        fig.suptitle('Cluster: '+str(cluster))
+        axs = axs.ravel()
+        for q, j in enumerate(sorted(list(anndata_broad.obs[sample_id_column].unique()))):
+            spatial_celltypes_tag_ = spatial_int[spatial_int.obs[sample_id_column]==j]
+            axs[q].plot((anndata[anndata.obs[sample_id_column] == j].obs.x), (anndata[anndata.obs[sample_id_column] == j].obs.y), marker='s', linestyle='', ms=size, color = 'grey', alpha = 0.2)
+            axs[q].plot(spatial_celltypes_tag_.obs.x, spatial_celltypes_tag_.obs.y, marker='s', linestyle='', ms=size, color = 'yellow')#spatial_int.uns['leiden_0.4_colors'][0])
+            axs[q].set_title(str(str(j)))
+            axs[q].axis('scaled')
+            axs[q].axis('off')
+        plt.show()
+        
