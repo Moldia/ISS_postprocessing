@@ -65,7 +65,6 @@ dependencies:
     - patsy==0.5.2
     - pciseq==0.0.40
     - pillow==9.1.0
-    - pip==22.0.4
     - pycparser==2.21
     - pynndescent==0.5.6
     - pyparsing==3.0.8
