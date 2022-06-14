@@ -456,5 +456,3 @@ def color_cells_gene_expression(ad,
         axs[q].set_ylabel(' ')
     plt.tight_layout(pad=3.0)
     plt.show()
-
-
